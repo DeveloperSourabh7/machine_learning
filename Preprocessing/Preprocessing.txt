@@ -1,0 +1,24 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+dataset=pd.read_csv("ABC.csv")
+A=dataset.iloc[:,:-1].values
+B=dataset.iloc[:,3].values
+
+from sklearn.impute import SimpleImputer
+imputer=SimpleImputer(missing_values=np.nan,strategy="mean")
+imputer=imputer.fit(A[:,1:3])
+A=imputer.transform(A[:,1:3])
+
+from sklearn.preprocessing import Labelencoder OneHotEncoder
+labelencoder_x=LabelEncoder()
+A[:,0]=labelencoder_x.fit(A[:,0])
+onehotencoder=OneHotEncoder(categorical_features=[0])
+A=onehotencoder.fit_transform(A).toarray()
+
+labelencoder_y=LabelEncoder()
+B=labelencoder_y.fit_transform(B)
+
+from sklearn.model_selection import train_test_split
+X_train,X_test,Y_train,Y_test=train_test_split(A,B,test_size=0.2,random_state=1)
